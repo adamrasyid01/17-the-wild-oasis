@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
+import Button from "./Button";
+import { HiXMark } from "react-icons/hi2";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -24,27 +27,46 @@ const Overlay = styled.div`
   transition: all 0.5s;
 `;
 
-const Button = styled.button`
-  background: none;
-  border: none;
-  padding: 0.4rem;
-  border-radius: var(--border-radius-sm);
-  transform: translateX(0.8rem);
-  transition: all 0.2s;
-  position: absolute;
-  top: 1.2rem;
-  right: 1.9rem;
+// const Button = styled.button`
+//   background: none;
+//   border: none;
+//   padding: 0.4rem;
+//   border-radius: var(--border-radius-sm);
+//   transform: translateX(0.8rem);
+//   transition: all 0.2s;
+//   position: absolute;
+//   top: 1.2rem;
+//   right: 1.9rem;
 
-  &:hover {
-    background-color: var(--color-grey-100);
-  }
+//   &:hover {
+//     background-color: var(--color-grey-100);
+//   }
 
-  & svg {
-    width: 2.4rem;
-    height: 2.4rem;
-    /* Sometimes we need both */
-    /* fill: var(--color-grey-500);
-    stroke: var(--color-grey-500); */
-    color: var(--color-grey-500);
-  }
-`;
+//   & svg {
+//     width: 2.4rem;
+//     height: 2.4rem;
+//     /* Sometimes we need both */
+//     /* fill: var(--color-grey-500);
+//     stroke: var(--color-grey-500); */
+//     color: var(--color-grey-500);
+//   }
+// `;
+
+function Modal({ children }) {
+  return (
+    <Overlay>
+      <StyledModal>
+        <Button>
+          <HiXMark />
+        </Button>
+        <div>{children}</div>
+      </StyledModal>
+    </Overlay>
+  );
+}
+
+Modal.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default Modal;
