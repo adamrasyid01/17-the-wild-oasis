@@ -2,6 +2,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import Button from "./Button";
 import { HiXMark } from "react-icons/hi2";
+import { createPortal } from "react-dom";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -52,21 +53,23 @@ const Overlay = styled.div`
 //   }
 // `;
 
-function Modal({ children }) {
-  return (
+function Modal({ children, onClose }) {
+  return createPortal(
     <Overlay>
       <StyledModal>
-        <Button>
+        <Button onClick={onClose}>
           <HiXMark />
         </Button>
         <div>{children}</div>
       </StyledModal>
-    </Overlay>
+    </Overlay>,
+    document.body,
   );
 }
 
 Modal.propTypes = {
   children: PropTypes.node.isRequired,
+  onClose: PropTypes.func,
 };
 
 export default Modal;
