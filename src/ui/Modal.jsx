@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import Button from "./Button";
 import { HiXMark } from "react-icons/hi2";
 import { createPortal } from "react-dom";
+import { cloneElement, createContext, useContext, useState } from "react";
+import { useOutsideClick } from "../hooks/useOutsideClick";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -53,23 +55,55 @@ const Overlay = styled.div`
 //   }
 // `;
 
-function Modal({ children, onClose }) {
+const ModalContext = createContext();
+
+function Modal({ children }) {
+  const [openName, setOpenName] = useState("");
+
+  const close = () => setOpenName("");
+  const open = setOpenName;
+
+  return <ModalContext.Provider value={{ openName, close, open }}>{children}</ModalContext.Provider>;
+}
+
+function Open({ children, opens: opensWindowName }) {
+  const { open } = useContext(ModalContext);
+  return cloneElement(children, { onClick: () => open(opensWindowName) });
+}
+
+function Window({ children, name }) {
+  const { openName, close } = useContext(ModalContext);
+  const ref = useOutsideClick(close);
+  if (name !== openName) return null;
   return createPortal(
     <Overlay>
-      <StyledModal>
-        <Button onClick={onClose}>
+      <StyledModal ref={ref}>
+        <Button onClick={close}>
           <HiXMark />
         </Button>
-        <div>{children}</div>
+        <div>{cloneElement(children, { onCloseModal: close })}</div>
       </StyledModal>
     </Overlay>,
     document.body,
   );
 }
 
-Modal.propTypes = {
-  children: PropTypes.node.isRequired,
+Open.propTypes = {
+  children: PropTypes.element.isRequired,
+  opens: PropTypes.string.isRequired,
+};
+
+Window.propTypes = {
+  children: PropTypes.element.isRequired,
+  name: PropTypes.string.isRequired,
   onClose: PropTypes.func,
 };
+
+Modal.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+Modal.Open = Open;
+Modal.Window = Window;
 
 export default Modal;
