@@ -7,8 +7,7 @@ export function useLogin() {
   const navigate = useNavigate();
   const { mutate: login, isLoading } = useMutation({
     mutationFn: ({ email, password }) => loginApi({ email, password }),
-    onSuccess: (user) => {
-      console.log(user);
+    onSuccess: () => {
       navigate("/dashboard");
     },
     onError: (error) => {
