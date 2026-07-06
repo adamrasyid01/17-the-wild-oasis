@@ -42,7 +42,7 @@ Filter.propTypes = {
     PropTypes.shape({
       value: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
-    })
+    }),
   ).isRequired,
 };
 
@@ -52,6 +52,8 @@ export default function Filter({ filterField, options }) {
 
   function handleClick(value) {
     searchParams.set(filterField, value);
+    // Biasanya dipake pas filter berubah — biar balik ke halaman 1 ketika filter diubah, bukan stay di halaman
+    if (searchParams.get("page")) searchParams.set("page", 1);
     setSearchParams(searchParams);
   }
 
