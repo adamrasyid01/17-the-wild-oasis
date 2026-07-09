@@ -29,3 +29,31 @@ const Box = styled.div`
     color: var(--color-grey-500);
   }
 `;
+
+import Heading from "./Heading";
+import GlobalStyles from "../styles/GlobalStyles";
+import PropTypes from "prop-types";
+import Button from "./Button";
+
+export default function ErrorFallback({ error, resetErrorBoundary }) {
+  return (
+    <>
+      <GlobalStyles>
+        <StyledErrorFallback>
+          <Box>
+            <Heading>Something Went Wrong</Heading>
+            <p>{error.message}</p>
+            <Button size="large" onClick={resetErrorBoundary}>
+              Try again
+            </Button>
+          </Box>
+        </StyledErrorFallback>
+      </GlobalStyles>
+    </>
+  );
+}
+
+ErrorFallback.propTypes = {
+  error: PropTypes.node.isRequired,
+  resetErrorBoundary: PropTypes.node.isRequired,
+};
